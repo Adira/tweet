@@ -1,3 +1,38 @@
+<?php
+
+
+	$host     = "localhost";
+	$user     = "root";
+	$password = "passwordx";
+	$database = "twitter";
+
+	mysql_connect($host, $user, $password) or die(mysql_error());
+	mysql_select_db($database)             or die(mysql_error());
+
+	extract($_REQUEST);
+
+	if(isset($id, $password)) {
+		$recordset = mysql_query("SELECT * FROM accounts");
+
+		if($recordset == false) {die(mysql_error());}
+
+		$success="no";
+
+		while($row = mysql_fetch_assoc($recordset)) {
+			//print "hi";
+			if(($id==$row["login"]) && ($password==$row["password"])) {
+				header('Location: http://localhost/tweet/CRUD.php');
+			}
+		}
+
+		if($success == "no")
+		{
+			print("Login Failed");
+		}
+	}
+
+?>
+
 <html>
 <head>
 	<title> Login Page </title>
@@ -21,43 +56,8 @@
 </table>
 </form>
 
-<?php
 
-
-	$host     = "localhost";
-	$user     = "root";
-	$password = "passwordx";
-	$database = "twitter";
-
-	mysql_connect($host, $user, $password) or die(mysql_error());
-	mysql_select_db($database)             or die(mysql_error());
-
-	extract($_REQUEST);
-
-	if(isset($id, $password)){
-
-	$recordset = mysql_query("SELECT * FROM accounts");
-	if($recordset == false) {die(mysql_error());}
-
-	$success="no";
-
-	while($row = mysql_fetch_assoc($recordset))
-	{
-		//print "hi";
-		if(($id==$row["login"]) && ($password==$row["password"]))
-		{
-			print "Welcome ";
-			print $row["login"];
-			$success="yes";
-		}
-	}
-		if($success == "no")
-		{
-			print("Login Failed");
-		}
-	}
-
-?>
+<a href=register.php>Register</a>
 
 </body>
 </html>
